@@ -1,0 +1,71 @@
+@import './theme.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--dark-gray);
+  background-color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Base Styles */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--charcoal);
+  line-height: var(--line-height-headings);
+  margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: var(--font-size-hero); }
+h2 { font-size: var(--font-size-section); }
+h3 { font-size: var(--font-size-subsection); }
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Links */
+a {
+  color: var(--primary-orange);
+  text-decoration: none;
+  transition: color var(--transition-standard);
+}
+
+a:hover {
+  color: var(--dark-orange);
+  text-decoration: underline;
+}
+
+/* Focus States for Accessibility */
+*:focus {
+  outline: 2px solid var(--primary-orange);
+  outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.25rem; }
+}
