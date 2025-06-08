@@ -7,6 +7,8 @@
 - Icon colors: Orange gradient
 - Text: "RealQuick" in black, "FUNDS" in smaller text below
 - Always maintain clear space around logo
+- **Header Logo**: Dark version, 120px width, auto height
+- **Footer Logo**: Dark version, 120px width, auto height
 
 ### Brand Voice
 - Professional yet approachable
@@ -33,6 +35,13 @@
 --border-color: #E0E0E0;
 ```
 
+### UI Colors
+```css
+--header-footer-bg: #444444;
+--text-on-dark: #FFFFFF;
+--secondary-text-on-dark: #CCCCCC;
+```
+
 ### Semantic Colors
 ```css
 --success: #27AE60;
@@ -45,9 +54,14 @@
 
 ### Font Stack
 ```css
---font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+--font-headings: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+--font-body: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 --font-mono: 'Fira Code', 'Courier New', monospace;
 ```
+
+### Font Usage
+- **Headings (h1-h6)**: Lato, sans-serif (weights: 300, 400, 700, 900)
+- **Body Text**: Poppins, sans-serif (weights: 300, 400, 500, 600, 700)
 
 ### Font Sizes
 ```css
@@ -68,6 +82,35 @@
 --font-semibold: 600;
 --font-bold: 700;
 ```
+
+## Layout Structure
+
+### Page Layout
+- All pages use a consistent layout with sticky header and footer
+- Content is properly padded to avoid overlapping with fixed elements
+
+### Header
+- **Position**: Fixed at the top of the viewport
+- **Height**: 70px
+- **Background Color**: #444444 (dark gray)
+- **Content**: Centered RealQuick Funds logo (120px width)
+- **Shadow**: Subtle shadow for depth
+- **z-index**: 1000 to ensure it stays above all content
+
+### Footer
+- **Position**: Fixed at the bottom of the viewport
+- **Height**: 70px
+- **Background Color**: #444444 (dark gray)
+- **Content**: 
+  - Left: RealQuick Funds logo (120px width)
+  - Right: Copyright text
+- **z-index**: 1000 to ensure it stays above all content
+
+### Main Content
+- **Padding**: 90px top and bottom (to account for header and footer)
+- **Min Height**: calc(100vh - 140px) to ensure full viewport coverage
+- **Width**: 100% with box-sizing: border-box
+- **Container**: Pages typically use a max-width container (max-w-4xl) with horizontal padding
 
 ## Component Styles
 
@@ -100,6 +143,10 @@
   border-radius: 30px;
 }
 ```
+
+### Tailwind Button Classes
+- **Primary Button**:
+  - `inline-flex items-center px-8 py-4 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg transition-colors text-lg`
 
 ### Form Elements
 ```css
@@ -200,49 +247,30 @@
 
 ## Animation & Transitions
 
-### Standard Transitions
+### Transition Speeds
 ```css
---transition-fast: 150ms ease;
---transition-base: 300ms ease;
---transition-slow: 500ms ease;
+--transition-fast: 150ms;
+--transition-normal: 300ms;
+--transition-slow: 500ms;
 ```
 
-### Hover Effects
-- Buttons: Slight elevation with shadow
-- Links: Color change to primary orange
-- Cards: Subtle shadow increase
-- Form fields: Border color change with glow
+### Easing Functions
+```css
+--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+--ease-in: cubic-bezier(0.4, 0, 1, 1);
+--ease-out: cubic-bezier(0, 0, 0.2, 1);
+```
 
-## Icons & Images
+### Common Animations
+- Button hover: Scale slightly (1.02) and lighten color
+- Form focus: Highlight border with primary color
+- Modal entry: Fade in and scale up from 0.95 to 1
+- Toast notifications: Slide in from top
 
-### Icon Style
-- Use line icons for consistency
-- Default size: 20px
-- Color: Match text color or primary orange for actions
-- Maintain 4px minimum spacing from text
+## Implementation Notes
 
-### Image Guidelines
-- High-quality, professional photography
-- Consistent color treatment
-- 16:9 ratio for hero images
-- Border-radius: 8px for content images
-
-## Best Practices
-
-### Accessibility
-- Minimum contrast ratio 4.5:1 for normal text
-- Focus indicators on all interactive elements
-- Semantic HTML structure
-- ARIA labels where needed
-
-### Performance
-- Optimize images (WebP with fallbacks)
-- Lazy load below-the-fold content
-- Minimize CSS specificity
-- Use CSS custom properties for theming
-
-### Consistency
-- Always use design tokens
-- Follow spacing scale strictly
-- Maintain visual hierarchy
-- Test across all breakpoints
+- Layout is implemented using inline styles in root.tsx
+- Typography settings are in global.css
+- Additional layout styles in layout.css
+- Tailwind CSS is used for utility classes throughout the application
+- Use `window.ENV` for accessing environment variables on the client side

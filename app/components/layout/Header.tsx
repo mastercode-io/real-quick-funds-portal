@@ -1,6 +1,17 @@
 import { Link } from "@remix-run/react";
 
+// Declare the global ENV type
+declare global {
+  interface Window {
+    ENV: {
+      MAIN_WEBSITE_URL: string;
+    };
+  }
+}
+
 export function Header() {
+  const mainWebsiteUrl = typeof window !== "undefined" ? window.ENV?.MAIN_WEBSITE_URL : "https://realquickfunds.com";
+  
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +39,7 @@ export function Header() {
               EMD Portal
             </Link>
             <a 
-              href={process.env.MAIN_WEBSITE_URL || "https://realquickfunds.com"}
+              href={mainWebsiteUrl}
               className="text-gray-700 hover:text-primary transition-colors"
               target="_blank"
               rel="noopener noreferrer"

@@ -1,5 +1,6 @@
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const mainWebsiteUrl = typeof window !== "undefined" ? window.ENV?.MAIN_WEBSITE_URL : "https://realquickfunds.com";
   
   return (
     <footer className="bg-primary-dark text-white">
@@ -29,7 +30,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <a 
-                  href={`${process.env.MAIN_WEBSITE_URL || "https://realquickfunds.com"}/about`}
+                  href={`${mainWebsiteUrl}/about`}
                   className="text-gray-300 hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -39,7 +40,7 @@ export function Footer() {
               </li>
               <li>
                 <a 
-                  href={`${process.env.MAIN_WEBSITE_URL || "https://realquickfunds.com"}/services`}
+                  href={`${mainWebsiteUrl}/services`}
                   className="text-gray-300 hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -49,7 +50,7 @@ export function Footer() {
               </li>
               <li>
                 <a 
-                  href={`${process.env.MAIN_WEBSITE_URL || "https://realquickfunds.com"}/contact`}
+                  href={`${mainWebsiteUrl}/contact`}
                   className="text-gray-300 hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -65,7 +66,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <a 
-                  href={`${process.env.MAIN_WEBSITE_URL || "https://realquickfunds.com"}/privacy`}
+                  href={`${mainWebsiteUrl}/privacy`}
                   className="text-gray-300 hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -75,7 +76,7 @@ export function Footer() {
               </li>
               <li>
                 <a 
-                  href={`${process.env.MAIN_WEBSITE_URL || "https://realquickfunds.com"}/terms`}
+                  href={`${mainWebsiteUrl}/terms`}
                   className="text-gray-300 hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -89,7 +90,7 @@ export function Footer() {
         
         <div className="border-t border-gray-600 mt-8 pt-8 text-center">
           <p className="text-gray-300">
-            © {currentYear} RealQuick Funds. All rights reserved.
+            {currentYear} RealQuick Funds. All rights reserved.
           </p>
         </div>
       </div>

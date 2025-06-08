@@ -6,6 +6,9 @@
   --primary: #F39C12;
   --primary-hover: #E67E22;
   --primary-dark: #2C3E50;
+  --color-primary: 255 153 0;
+  --color-primary-dark: 204 102 0;
+  --color-primary-hover: 230 138 0;
 }
 
 @layer base {
@@ -13,7 +16,12 @@
     @apply border-border;
   }
   
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lato', sans-serif;
+  }
+  
   body {
     @apply bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
   }
 }
