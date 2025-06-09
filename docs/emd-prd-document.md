@@ -12,7 +12,7 @@ The EMD (Earnest Money Deposit) Request Form is a web-based application that all
 ## Functional Requirements
 
 ### Form Structure
-The EMD form consists of two steps plus a confirmation page:
+The EMD form consists of three steps:
 
 #### Step 1: Borrower Information
 - **Borrower First Name** (required, text)
@@ -41,7 +41,7 @@ The EMD form consists of two steps plus a confirmation page:
 - **Terms Agreement** (required, checkbox)
   - Text: "I agree to the terms and conditions above"
 
-#### Confirmation Page
+#### Step 3: Confirmation
 Display success message with process overview:
 1. Submit your request (DONE!)
 2. Wait for a response from our team
@@ -50,7 +50,8 @@ Display success message with process overview:
 5. We WIRE FUNDS!
 
 ### Navigation Requirements
-- Progress indicator showing current step (Info → Details → Other)
+- Progress indicator showing current step (Borrower Info → Deal Info → Confirmation)
+- Progress indicator positioned below form title for improved visual flow
 - "Next" button to proceed between steps
 - "Submit" button on final step
 - Back navigation to previous steps
@@ -79,8 +80,9 @@ Display success message with process overview:
 - Match RealQuick Funds website design
 - Orange primary color (#F39C12)
 - Dark header/footer
-- Professional, clean form styling
+- Professional, clean form styling with compact elements
 - Mobile-responsive design
+- Form container uses max-width-3xl for better space utilization
 
 ### Non-Functional Requirements
 - Page load time < 2 seconds
@@ -91,6 +93,13 @@ Display success message with process overview:
 - Secure file uploads (virus scanning, file type validation)
 - SSL/HTTPS required
 
+### UI/UX Requirements
+- Compact form elements for better space utilization
+- Smaller input fields with reduced padding
+- Smaller font sizes for labels (text-xs)
+- Reduced spacing between form elements
+- Consistent styling across all form steps
+
 ### Privacy & Legal
 - Privacy policy and terms acceptance required
 - Data handled according to privacy policy
@@ -99,13 +108,5 @@ Display success message with process overview:
 
 ### Future Considerations
 - Portal expansion capabilities
-- User authentication system
-- Dashboard for tracking submissions
-- Document management features
-- Communication tools
-
-## Success Metrics
-- Form completion rate > 80%
-- Average time to complete < 5 minutes
-- Successful CRM integration rate > 99%
-- User satisfaction score > 4.5/5
+- Additional form types for different loan products
+- User accounts for tracking application status

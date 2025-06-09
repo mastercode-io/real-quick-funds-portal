@@ -110,7 +110,7 @@
 - **Padding**: 90px top and bottom (to account for header and footer)
 - **Min Height**: calc(100vh - 140px) to ensure full viewport coverage
 - **Width**: 100% with box-sizing: border-box
-- **Container**: Pages typically use a max-width container (max-w-4xl) with horizontal padding
+- **Container**: Pages typically use a max-width container (max-w-3xl) with horizontal padding
 
 ## Component Styles
 
@@ -120,12 +120,13 @@
 .btn-primary {
   background: var(--primary-orange);
   color: white;
-  padding: 12px 32px;
-  border-radius: 30px;
-  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
+  font-size: 0.875rem;
 }
 
 .btn-primary:hover {
@@ -139,24 +140,25 @@
   background: transparent;
   color: var(--primary-orange);
   border: 2px solid var(--primary-orange);
-  padding: 10px 30px;
-  border-radius: 30px;
+  padding: 8px 22px;
+  border-radius: 8px;
+  font-size: 0.875rem;
 }
 ```
 
 ### Tailwind Button Classes
 - **Primary Button**:
-  - `inline-flex items-center px-8 py-4 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg transition-colors text-lg`
+  - `inline-flex items-center px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-medium rounded-md transition-colors text-sm shadow-md hover:shadow-lg`
 
 ### Form Elements
 ```css
 /* Input Fields */
 .form-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 8px 12px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: var(--text-base);
+  border-radius: 6px;
+  font-size: var(--text-sm);
   transition: border-color 0.3s ease;
 }
 
@@ -170,8 +172,9 @@
 .form-label {
   font-weight: var(--font-medium);
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   display: block;
+  font-size: var(--text-xs);
 }
 
 /* Required Indicator */
@@ -184,15 +187,15 @@
 ```css
 .card {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  padding: 20px;
 }
 
 .section-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 32px 16px;
 }
 ```
 
@@ -204,14 +207,36 @@
   position: relative;
 }
 
+.step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
 .progress-step.active .step-circle {
   background: var(--primary-orange);
   color: white;
+  transform: scale(1.05);
 }
 
 .progress-step.completed .step-circle {
   background: var(--success);
   color: white;
+}
+
+.step-connector {
+  height: 2px;
+  background: var(--border-color);
+  flex-grow: 1;
+  margin: 0 4px;
+}
+
+.step-connector.active {
+  background: var(--primary-orange);
 }
 ```
 
@@ -274,3 +299,5 @@
 - Additional layout styles in layout.css
 - Tailwind CSS is used for utility classes throughout the application
 - Use `window.ENV` for accessing environment variables on the client side
+- Form elements use a compact styling for better space utilization
+- Step progress indicators appear below form title for improved visual flow
