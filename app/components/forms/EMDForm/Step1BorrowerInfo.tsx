@@ -9,13 +9,46 @@ interface Step1BorrowerInfoProps {
 }
 
 const Step1BorrowerInfo: React.FC<Step1BorrowerInfoProps> = ({ onNext, formData }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
     defaultValues: formData || {}
   });
 
   const onSubmit = (data: any) => {
+    // Strip formatting from phone number before submitting
+    if (data.phone) {
+      data.phone = data.phone.replace(/\D/g, '');
+    }
     onNext?.(data);
   };
+
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digit characters
+    const cleaned = value.replace(/\D/g, '');
+    
+    // Format the number based on length
+    if (cleaned.length === 0) {
+      return '';
+    } else if (cleaned.length <= 3) {
+      return `(${cleaned}`;
+    } else if (cleaned.length <= 6) {
+      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
+    } else {
+      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setValue('phone', formatted);
+  };
+
+  // Format phone on initial load if it's a plain number string
+  React.useEffect(() => {
+    const currentPhone = watch('phone');
+    if (currentPhone && /^\d+$/.test(currentPhone)) {
+      setValue('phone', formatPhoneNumber(currentPhone));
+    }
+  }, [watch, setValue]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -97,6 +130,7 @@ const Step1BorrowerInfo: React.FC<Step1BorrowerInfoProps> = ({ onNext, formData 
               }
             })}
             placeholder="(555) 123-4567"
+            onChange={handlePhoneChange}
             aria-invalid={!!errors.phone}
           />
           {errors.phone && (
@@ -136,10 +170,10 @@ const Step1BorrowerInfo: React.FC<Step1BorrowerInfoProps> = ({ onNext, formData 
         </label>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-4 flex justify-end">
         <button
           type="submit"
-          className="w-full bg-primary hover:bg-primary-hover text-white font-medium py-2.5 px-6 rounded-md transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg text-sm"
+          className="md:w-auto bg-primary hover:bg-primary-hover text-white font-medium py-2.5 px-6 rounded-md transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg text-sm"
         >
           Next <span className="ml-1">→</span>
         </button>

@@ -6,7 +6,7 @@ import FormCheckbox from "~/components/ui/FormCheckbox";
 
 interface Step2DealInfoProps {
   onNext?: () => void;
-  onBack?: () => void;
+  onBack: () => void;
   formData?: any;
   updateFormData?: (data: any) => void;
 }
@@ -18,6 +18,7 @@ interface FileUploadProps {
   accept?: string;
   onFileChange?: (file: File | null) => void;
   error?: string;
+  showError?: boolean;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ 
@@ -26,7 +27,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
   required = false, 
   accept = ".pdf,.doc,.docx,.jpg,.jpeg,.png",
   onFileChange,
-  error
+  error,
+  showError = false
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -74,7 +76,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         className={`border-2 border-dashed rounded-md p-6 text-center transition-colors ${
           isDragOver 
             ? 'border-primary bg-primary/5' 
-            : error 
+            : error && showError
             ? 'border-red-300 bg-red-50' 
             : 'border-gray-300 hover:border-gray-400'
         }`}
@@ -84,7 +86,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       >
         <div className="flex flex-col items-center space-y-2">
           <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z" />
           </svg>
           {selectedFile ? (
@@ -116,7 +118,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           )}
         </div>
       </div>
-      {error && (
+      {error && showError && (
         <p className="text-red-600 text-xs mt-1" role="alert">{error}</p>
       )}
     </div>
@@ -185,7 +187,7 @@ const Step2DealInfo: React.FC<Step2DealInfoProps> = ({
   formData, 
   updateFormData 
 }) => {
-  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, setValue } = useForm({
     defaultValues: formData || {}
   });
 
@@ -203,6 +205,17 @@ const Step2DealInfo: React.FC<Step2DealInfoProps> = ({
     };
     updateFormData?.(formDataWithFiles);
     onNext?.();
+  };
+
+  const handleBack = () => {
+    // Save current form data without validation
+    const currentData = {
+      ...watch(),
+      purchaseAgreementFile,
+      wiringInstructionsFile
+    };
+    updateFormData?.(currentData);
+    onBack?.();
   };
 
   const formatCurrency = (value: string) => {
@@ -227,67 +240,119 @@ const Step2DealInfo: React.FC<Step2DealInfoProps> = ({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <input type="hidden" name="step" value="2" />
       
-      {/* Requested Amount */}
-      <div>
-        <label htmlFor="requestedAmount" className="block text-xs font-medium text-gray-700 mb-1">
-          Requested Amount <span className="text-red-500">*</span>
-        </label>
-        <div className="relative">
-          <span className="absolute left-3 top-2 text-gray-500 text-sm">$</span>
-          <FormInput
-            id="requestedAmount"
-            {...register("requestedAmount", { required: "Requested amount is required" })}
-            placeholder="0.00"
-            className="pl-8"
-            onChange={handleCurrencyChange}
-            aria-invalid={!!errors.requestedAmount}
-          />
+      {/* Requested Amount and Funds Required Date in one row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Requested Amount */}
+        <div>
+          <label htmlFor="requestedAmount" className="block text-xs font-medium text-gray-700 mb-1">
+            Requested Amount <span className="text-red-500">*</span>
+          </label>
+          <div className="relative mt-6">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <span className="text-gray-500">$</span>
+            </div>
+            <FormInput
+              id="requestedAmount"
+              {...register("requestedAmount", { required: "Requested amount is required" })}
+              className="pl-7"
+              placeholder="0.00"
+              onChange={handleCurrencyChange}
+              aria-invalid={!!errors.requestedAmount}
+            />
+          </div>
+          {errors.requestedAmount && (
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.requestedAmount.message === 'string' ? errors.requestedAmount.message : 'Requested amount is required'}
+            </p>
+          )}
         </div>
-        {errors.requestedAmount && (
-          <p className="text-red-600 text-xs mt-1" role="alert">
-            {typeof errors.requestedAmount.message === 'string' ? errors.requestedAmount.message : 'Requested amount is required'}
+
+        {/* When Funds Required Date */}
+        <div>
+          <label htmlFor="fundsRequiredDate" className="block text-xs font-medium text-gray-700 mb-1">
+            When Funds Required <span className="text-red-500">*</span>
+          </label>
+          <p className="text-xs text-gray-500 mb-1">
+            Please allow 1-2 business days for processing
           </p>
-        )}
+          <FormInput
+            id="fundsRequiredDate"
+            type="date"
+            {...register("fundsRequiredDate", { required: "Funds required date is required" })}
+            aria-invalid={!!errors.fundsRequiredDate}
+          />
+          {errors.fundsRequiredDate && (
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.fundsRequiredDate.message === 'string' ? errors.fundsRequiredDate.message : 'Funds required date is required'}
+            </p>
+          )}
+        </div>
       </div>
 
-      {/* When Funds Are Required */}
-      <div>
-        <label htmlFor="fundsRequiredDate" className="block text-xs font-medium text-gray-700 mb-1">
-          When Funds Are Required <span className="text-red-500">*</span>
-        </label>
-        <p className="text-xs text-gray-500 mb-2">
-          When is EMD required to be submitted per the purchase agreement?
-        </p>
-        <FormInput
-          id="fundsRequiredDate"
-          type="date"
-          {...register("fundsRequiredDate", { required: "Funds required date is required" })}
-          aria-invalid={!!errors.fundsRequiredDate}
-        />
-        {errors.fundsRequiredDate && (
-          <p className="text-red-600 text-xs mt-1" role="alert">
-            {typeof errors.fundsRequiredDate.message === 'string' ? errors.fundsRequiredDate.message : 'Funds required date is required'}
-          </p>
-        )}
+      {/* End of Inspection Period and Close of Escrow Date */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="endOfInspectionDate" className="block text-xs font-medium text-gray-700 mb-1">
+            End of Inspection Period <span className="text-red-500">*</span>
+          </label>
+          <FormInput
+            id="endOfInspectionDate"
+            type="date"
+            {...register("endOfInspectionDate", { 
+              required: "End of inspection period is required"
+            })}
+            aria-invalid={!!errors.endOfInspectionDate}
+          />
+          {errors.endOfInspectionDate && (
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.endOfInspectionDate.message === 'string' ? errors.endOfInspectionDate.message : 'End of inspection period is required'}
+            </p>
+          )}
+        </div>
+        
+        <div>
+          <label htmlFor="closeOfEscrowDate" className="block text-xs font-medium text-gray-700 mb-1">
+            Close of Escrow Date <span className="text-red-500">*</span>
+          </label>
+          <FormInput
+            id="closeOfEscrowDate"
+            type="date"
+            {...register("closeOfEscrowDate", { 
+              required: "Close of escrow date is required",
+              validate: (value) => {
+                if (endOfInspectionDate && value && new Date(value) <= new Date(endOfInspectionDate)) {
+                  return "Close of escrow date must be after end of inspection period";
+                }
+                return true;
+              }
+            })}
+            aria-invalid={!!errors.closeOfEscrowDate}
+          />
+          {errors.closeOfEscrowDate && (
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.closeOfEscrowDate.message === 'string' ? errors.closeOfEscrowDate.message : 'Close of escrow date is required'}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Subject Property Address */}
       <div>
-        <label className="block text-xs font-medium text-gray-700 mb-2">
+        <label htmlFor="propertyAddress" className="block text-xs font-medium text-gray-700 mb-1">
           Subject Property Address <span className="text-red-500">*</span>
         </label>
-        
         <div className="space-y-3">
           <div className="relative">
-            <svg className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </div>
             <FormInput
               id="propertyAddress"
               {...register("propertyAddress", { required: "Property address is required" })}
+              className="pl-9"
               placeholder="Enter property address"
-              className="pl-10"
               aria-invalid={!!errors.propertyAddress}
             />
           </div>
@@ -349,53 +414,6 @@ const Step2DealInfo: React.FC<Step2DealInfoProps> = ({
         </div>
       </div>
 
-      {/* End of Inspection Period and Close of Escrow Date */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="endOfInspectionDate" className="block text-xs font-medium text-gray-700 mb-1">
-            End of Inspection Period <span className="text-red-500">*</span>
-          </label>
-          <FormInput
-            id="endOfInspectionDate"
-            type="date"
-            {...register("endOfInspectionDate", { 
-              required: "End of inspection period is required"
-            })}
-            aria-invalid={!!errors.endOfInspectionDate}
-          />
-          {errors.endOfInspectionDate && (
-            <p className="text-red-600 text-xs mt-1" role="alert">
-              {typeof errors.endOfInspectionDate.message === 'string' ? errors.endOfInspectionDate.message : 'End of inspection period is required'}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="closeOfEscrowDate" className="block text-xs font-medium text-gray-700 mb-1">
-            Close of Escrow Date <span className="text-red-500">*</span>
-          </label>
-          <FormInput
-            id="closeOfEscrowDate"
-            type="date"
-            {...register("closeOfEscrowDate", { 
-              required: "Close of escrow date is required",
-              validate: (value) => {
-                if (endOfInspectionDate && value && new Date(value) <= new Date(endOfInspectionDate)) {
-                  return "Close of escrow date must be after end of inspection period";
-                }
-                return true;
-              }
-            })}
-            aria-invalid={!!errors.closeOfEscrowDate}
-          />
-          {errors.closeOfEscrowDate && (
-            <p className="text-red-600 text-xs mt-1" role="alert">
-              {typeof errors.closeOfEscrowDate.message === 'string' ? errors.closeOfEscrowDate.message : 'Close of escrow date is required'}
-            </p>
-          )}
-        </div>
-      </div>
-
       {/* Purchase & Sale Agreement */}
       <FileUpload
         label="Purchase & Sale Agreement"
@@ -404,6 +422,7 @@ const Step2DealInfo: React.FC<Step2DealInfoProps> = ({
         accept=".pdf,.doc,.docx"
         onFileChange={setPurchaseAgreementFile}
         error={!purchaseAgreementFile ? "Purchase agreement is required" : undefined}
+        showError={isSubmitting}
       />
 
       {/* Wiring Instructions */}
@@ -414,6 +433,7 @@ const Step2DealInfo: React.FC<Step2DealInfoProps> = ({
         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
         onFileChange={setWiringInstructionsFile}
         error={!wiringInstructionsFile ? "Wiring instructions are required" : undefined}
+        showError={isSubmitting}
       />
 
       {/* Privacy Policy Text */}
@@ -448,10 +468,18 @@ const Step2DealInfo: React.FC<Step2DealInfoProps> = ({
       )}
 
       {/* Submit Button */}
-      <div className="pt-4">
+      <div className="pt-4 flex flex-col md:flex-row md:justify-between gap-3">
+        <button
+          type="button"
+          onClick={handleBack}
+          className="w-full md:w-auto bg-primary hover:bg-primary-hover text-white font-medium py-2.5 px-6 rounded-md transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg text-sm"
+        >
+          <span className="mr-1">←</span> Back
+        </button>
+        
         <button
           type="submit"
-          className="w-full bg-gray-900 hover:bg-black text-white font-medium py-2.5 px-6 rounded-md transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg text-sm"
+          className="w-full md:w-auto bg-gray-900 hover:bg-black text-white font-medium py-2.5 px-6 rounded-md transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg text-sm"
         >
           Submit
         </button>

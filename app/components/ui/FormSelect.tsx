@@ -15,7 +15,9 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
     return (
       <select
         ref={ref}
-        className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary ${className}`}
+        className={`w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800
+          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+          hover:border-gray-400 ${className}`}
         {...props}
       >
         {options.map((option) => (
