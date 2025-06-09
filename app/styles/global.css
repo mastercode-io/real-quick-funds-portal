@@ -1,27 +1,95 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* Custom CSS variables and component styles */
 :root {
   --primary: #F39C12;
   --primary-hover: #E67E22;
   --primary-dark: #2C3E50;
-  --color-primary: 255 153 0;
-  --color-primary-dark: 204 102 0;
-  --color-primary-hover: 230 138 0;
+  --color-primary: 243 156 18;
+  --color-primary-dark: 44 62 80;
+  --color-primary-hover: 230 126 34;
+  
+  /* Additional CSS variables for Tailwind theme */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary-color: 243 156 18;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 243 156 18;
+  --radius: 0.5rem;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lato', sans-serif;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Poppins', sans-serif;
-  }
+/* Base styles for typography and elements */
+html {
+  @apply antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading font-bold;
+}
+
+h1 {
+  @apply text-3xl md:text-4xl;
+}
+
+h2 {
+  @apply text-2xl md:text-3xl;
+}
+
+h3 {
+  @apply text-xl md:text-2xl;
+}
+
+body {
+  @apply bg-white text-gray-900 font-body;
+}
+
+/* Form components */
+.form-label {
+  @apply block text-sm font-semibold text-gray-700 mb-2;
+}
+
+.form-input {
+  @apply w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 
+    placeholder:text-gray-400 bg-white transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+    hover:border-gray-400;
+}
+
+.form-checkbox {
+  @apply w-5 h-5 text-primary border-gray-300 rounded 
+    focus:ring-primary focus:ring-2;
+}
+
+/* Button components */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary-hover shadow-md hover:shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+/* Card components */
+.card {
+  @apply bg-white rounded-xl shadow-card border border-gray-200 p-6;
+}
+
+.card-hover {
+  @apply hover:shadow-card-hover transition-shadow duration-200;
 }

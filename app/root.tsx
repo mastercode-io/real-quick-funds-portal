@@ -10,10 +10,15 @@ import {
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 
-import "./styles/global.css";
-import "./styles/layout.css";
+// Import CSS with proper Remix handling
+import tailwindStylesUrl from "./styles/tailwind.css";
+import globalStylesUrl from "./styles/global.css";
+import layoutStylesUrl from "./styles/layout.css";
 
 export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: tailwindStylesUrl },
+  { rel: "stylesheet", href: globalStylesUrl },
+  { rel: "stylesheet", href: layoutStylesUrl },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -45,7 +50,7 @@ const headerStyle = {
   left: 0,
   right: 0,
   backgroundColor: '#444444',
-  padding: '10px 0',
+  padding: '0',
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   zIndex: 1000,
   display: 'flex',
@@ -61,7 +66,7 @@ const footerStyle = {
   right: 0,
   backgroundColor: '#444444',
   color: 'white',
-  padding: '10px 0',
+  padding: '0',
   zIndex: 1000,
   height: '70px',
 };
@@ -78,16 +83,18 @@ const footerContainerStyle = {
 
 const logoStyle = {
   height: 'auto',
-  width: '120px',
+  width: '100px',
+  margin: '15px 0',
 };
 
 const contentWrapperStyle = {
-  paddingTop: '90px',  
-  paddingBottom: '90px', 
+  paddingTop: '70px',  
+  paddingBottom: '70px', 
   minHeight: 'calc(100vh - 140px)', 
   width: '100%',
   maxWidth: '100%',
   boxSizing: 'border-box' as const,
+  backgroundColor: '#f9fafb',
 };
 
 function AppLayout({ children }: { children: React.ReactNode }) {
