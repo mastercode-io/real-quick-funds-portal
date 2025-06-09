@@ -3,11 +3,22 @@ import { useForm } from "react-hook-form";
 import FormInput from "~/components/ui/FormInput";
 import FormCheckbox from "~/components/ui/FormCheckbox";
 
-const Step1BorrowerInfo: React.FC = () => {
-  const { register, formState: { errors } } = useForm();
+interface Step1BorrowerInfoProps {
+  onNext?: (data: any) => void;
+  formData?: any;
+}
+
+const Step1BorrowerInfo: React.FC<Step1BorrowerInfoProps> = ({ onNext, formData }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: formData || {}
+  });
+
+  const onSubmit = (data: any) => {
+    onNext?.(data);
+  };
 
   return (
-    <form className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <input type="hidden" name="step" value="1" />
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -17,12 +28,14 @@ const Step1BorrowerInfo: React.FC = () => {
           </label>
           <FormInput
             id="firstName"
-            {...register("firstName", { required: true })}
+            {...register("firstName", { required: "First name is required" })}
             placeholder="Enter first name"
             aria-invalid={!!errors.firstName}
           />
           {errors.firstName && (
-            <p className="text-red-600 text-xs mt-1" role="alert">First name is required.</p>
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.firstName.message === 'string' ? errors.firstName.message : 'First name is required'}
+            </p>
           )}
         </div>
 
@@ -32,12 +45,14 @@ const Step1BorrowerInfo: React.FC = () => {
           </label>
           <FormInput
             id="lastName"
-            {...register("lastName", { required: true })}
+            {...register("lastName", { required: "Last name is required" })}
             placeholder="Enter last name"
             aria-invalid={!!errors.lastName}
           />
           {errors.lastName && (
-            <p className="text-red-600 text-xs mt-1" role="alert">Last name is required.</p>
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.lastName.message === 'string' ? errors.lastName.message : 'Last name is required'}
+            </p>
           )}
         </div>
       </div>
@@ -51,14 +66,19 @@ const Step1BorrowerInfo: React.FC = () => {
             id="email"
             type="email"
             {...register("email", { 
-              required: true,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Enter a valid email address"
+              }
             })}
             placeholder="Enter email address"
             aria-invalid={!!errors.email}
           />
           {errors.email && (
-            <p className="text-red-600 text-xs mt-1" role="alert">Enter a valid email.</p>
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.email.message === 'string' ? errors.email.message : 'Enter a valid email'}
+            </p>
           )}
         </div>
 
@@ -70,14 +90,19 @@ const Step1BorrowerInfo: React.FC = () => {
             id="phone"
             type="tel"
             {...register("phone", { 
-              required: true,
-              pattern: /^\(\d{3}\) \d{3}-\d{4}$/
+              required: "Phone number is required",
+              pattern: {
+                value: /^\(\d{3}\) \d{3}-\d{4}$/,
+                message: "Format: (555) 123-4567"
+              }
             })}
             placeholder="(555) 123-4567"
             aria-invalid={!!errors.phone}
           />
           {errors.phone && (
-            <p className="text-red-600 text-xs mt-1" role="alert">Enter a valid phone number.</p>
+            <p className="text-red-600 text-xs mt-1" role="alert">
+              {typeof errors.phone.message === 'string' ? errors.phone.message : 'Enter a valid phone number'}
+            </p>
           )}
         </div>
       </div>
@@ -94,19 +119,19 @@ const Step1BorrowerInfo: React.FC = () => {
         />
         {errors.company && (
           <p className="text-red-600 text-xs mt-1" role="alert">
-            {typeof errors.company === 'string' ? errors.company : 'This field has an error.'}
+            {typeof errors.company.message === 'string' ? errors.company.message : 'This field has an error'}
           </p>
         )}
       </div>
 
       <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-md border border-gray-200">
         <input
-          id="referrer"
+          id="hasDifferentBroker"
           type="checkbox"
-          {...register("referrer")}
+          {...register("hasDifferentBroker")}
           className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-1 mt-0.5"
         />
-        <label htmlFor="referrer" className="block text-xs text-gray-700 font-medium leading-relaxed">
+        <label htmlFor="hasDifferentBroker" className="block text-xs text-gray-700 font-medium leading-relaxed">
           A different individual is referring or brokering this deal
         </label>
       </div>
@@ -114,9 +139,6 @@ const Step1BorrowerInfo: React.FC = () => {
       <div className="pt-4">
         <button
           type="submit"
-          name="_action"
-          value="navigate"
-          formAction="/emd?step=2"
           className="w-full bg-primary hover:bg-primary-hover text-white font-medium py-2.5 px-6 rounded-md transition-all duration-200 flex items-center justify-center space-x-2 shadow-md hover:shadow-lg text-sm"
         >
           Next <span className="ml-1">→</span>
