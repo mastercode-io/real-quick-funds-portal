@@ -23,12 +23,12 @@ const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
             <React.Fragment key={step.id}>
               <div className="flex flex-col items-center">
                 <div 
-                  className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold transition-all duration-200
-                    ${isActive ? 'bg-primary text-white shadow-lg scale-110' : 
+                  className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-all duration-200
+                    ${isActive ? 'bg-primary text-white shadow-md scale-105' : 
                       isCompleted ? 'bg-primary-dark text-white' : 'bg-gray-200 text-gray-600'}`}
                 >
                   {isCompleted ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   ) : (
@@ -36,8 +36,8 @@ const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
                   )}
                 </div>
                 <span 
-                  className={`mt-2 text-xs font-medium
-                    ${isActive ? 'text-primary font-semibold' : 
+                  className={`mt-1 text-xs
+                    ${isActive ? 'text-primary font-medium' : 
                       isCompleted ? 'text-primary-dark' : 'text-gray-500'}`}
                 >
                   {step.label}
@@ -46,7 +46,7 @@ const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
               
               {!isLast && (
                 <div 
-                  className={`flex-1 h-1 mx-2
+                  className={`flex-1 h-0.5 mx-1
                     ${step.id < currentStep ? 'bg-primary-dark' : 'bg-gray-200'}`}
                 />
               )}

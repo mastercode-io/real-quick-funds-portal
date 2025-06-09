@@ -20,21 +20,21 @@ export default function EMD() {
 
   return (
     <div className="flex flex-col bg-gray-50 min-h-[calc(100vh-140px)] w-full">
-      <div className="max-w-4xl mx-auto px-6 py-8 w-full flex-grow">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-3">EMD Request</h1>
-          <div className="w-40 h-1 bg-primary mx-auto mb-3"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto px-4 py-6 w-full flex-grow">
+        <div className="text-center mb-5">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">EMD Request</h1>
+          <div className="w-40 h-1 bg-primary mx-auto mb-2"></div>
+          <p className="text-gray-600 text-sm max-w-2xl mx-auto">
             Please complete all required information to submit your EMD request.
           </p>
         </div>
         
-        <div className="mb-10">
+        <div className="mb-6">
           <StepProgress steps={steps} currentStep={currentStep} />
         </div>
         
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-3 border-b border-gray-200">
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-5">
+          <h2 className="text-lg font-medium text-gray-800 mb-4 pb-2 border-b border-gray-200">
             Borrower Information
           </h2>
           
