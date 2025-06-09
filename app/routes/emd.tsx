@@ -23,8 +23,24 @@ export default function EMDRoute() {
   const [formData, setFormData] = React.useState({});
 
   const handleNext = (data: any) => {
+    // Update form data with the latest input
     setFormData(prevData => ({ ...prevData, ...data }));
-    setCurrentStep(prev => Math.min(prev + 1, steps.length));
+    
+    // Move to the next step
+    const nextStep = Math.min(currentStep + 1, steps.length);
+    setCurrentStep(nextStep);
+    
+    // If moving to confirmation step (step 3), clear sensitive data after a short delay
+    // This ensures the data is available for any final processing but doesn't persist longer than needed
+    if (nextStep === 3) {
+      // Store submission timestamp or confirmation ID if needed
+      const submissionTime = new Date().toISOString();
+      
+      // Clear form data after a brief delay (to allow for any final processing)
+      setTimeout(() => {
+        setFormData({ submissionTime });
+      }, 2000);
+    }
   };
 
   const handleBack = () => {
