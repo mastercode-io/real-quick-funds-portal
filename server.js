@@ -5,10 +5,7 @@ const { createRequestHandler } = require("@remix-run/netlify");
  * @type {import('@remix-run/netlify').RequestHandler}
  */
 exports.handler = createRequestHandler({
-  // When running in development, we'll use the build from the dev server.
-  // Otherwise, use the build that was generated in the build step.
-  build: process.env.NODE_ENV === "development" 
-    ? require("@remix-run/dev/server-build") 
-    : require("./build"),
+  // This is the standard path for the build output with Remix on Netlify
+  build: require('@remix-run/dev/server-build'),
   mode: process.env.NODE_ENV,
 });
