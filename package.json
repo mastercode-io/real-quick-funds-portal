@@ -6,8 +6,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev --manual",
+    "build": "npx remix build",
+    "dev": "npx remix dev --manual",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
