@@ -1,13 +1,14 @@
-/** @type {require('@remix-run/dev').AppConfig} */
+/** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   ignoredRouteFiles: ["**/.*"],
   tailwind: true,
   postcss: true,
   serverBuildTarget: "netlify",
   server: "./server.js",
+  serverModuleFormat: "cjs",
   publicPath: "/build/",
   assetsBuildDirectory: "public/build",
-  serverBuildPath: "build/index.js",
+  serverBuildPath: "netlify/functions/server.js",
   future: {
     v2_meta: true,
     v2_errorBoundary: true,
